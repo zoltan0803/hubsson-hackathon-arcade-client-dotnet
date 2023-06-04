@@ -1,21 +1,22 @@
-using System.Net;
-using Hubsson.Hackathon.Arcade.Client.Dotnet;
 using Hubsson.Hackathon.Arcade.Client.Dotnet.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Hubsson.Hackathon.Arcade.Client.Dotnet.Settings;
+using Microsoft.Extensions.Options;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+    .ConfigureAppConfiguration((hostingContext, config) =>
     {
-        var config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .Build()
-            .GetSection("ArcadeConfig");
-        
+        config.AddJsonFile("appsettings.json");
+    })
+    .ConfigureServices((hostContext, services) =>
+    {
+        services.Configure<ArcadeSettings>(hostContext.Configuration.GetSection("ArcadeConfig"));
+        services.Configure<BotSettings>(hostContext.Configuration.GetSection("BotConfig"));
+
         services.AddHostedService<Worker>();
         services.AddTransient<MatchService>();
-        services.AddSingleton(config.Get<ArcadeSettings>() ?? new ArcadeSettings());
+        services.AddTransient(provider => provider.GetRequiredService<IOptions<ArcadeSettings>>().Value);
+        services.AddTransient(provider => provider.GetRequiredService<IOptions<BotSettings>>().Value);
+
     })
     .Build();
 
