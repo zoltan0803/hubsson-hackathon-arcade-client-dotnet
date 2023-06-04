@@ -1,13 +1,8 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Hubsson.Hackathon.Arcade.Client.Dotnet;
 using Hubsson.Hackathon.Arcade.Client.Dotnet.Contracts;
 using Hubsson.Hackathon.Arcade.Client.Dotnet.Domain;
 using Hubsson.Hackathon.Arcade.Client.Dotnet.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Hubsson.Hackathon.Arcade.Client.Dotnet.Settings;
 using Action = Hubsson.Hackathon.Arcade.Client.Dotnet.Contracts.Action;
 using ClientGameState = Hubsson.Hackathon.Arcade.Client.Dotnet.Domain.ClientGameState;
 
